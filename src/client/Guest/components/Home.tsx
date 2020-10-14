@@ -1,7 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import Pagination from 'react-js-pagination';
+import ReactHtmlParser from 'react-html-parser';
 
-class ArticleItem extends Component {
+import { listArticles } from '../actions/article';
+import Article from '../types/Article';
+
+interface HomeProps {
+	dispatch?: ThunkDispatch<any, any, AnyAction>;
+	article?: { list: Article[], current: Article };
+};
+
+interface ArticleItemProps {
+	_id: string;
+	title: string;
+	content: string;
+	coverImg: string;
+};
+
+class ArticleItem extends Component<ArticleItemProps, {}> {
 
 	constructor(props) {
 		super(props);
@@ -9,13 +28,20 @@ class ArticleItem extends Component {
 	}
 
 	render() {
+		const { _id, title, content, coverImg } = this.props;
 		return (
 			<div className="col-md-12">
-				<div className="blog-entry ftco-animate">
-					<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/image_1.jpg")' }}></Link>
+				<div className="blog-entry ftco-animate fadeInUp ftco-animated">
+					<Link to="#" className="img"
+						style={{
+							backgroundImage: `url(${coverImg})`, backgroundSize: 'cover',
+							backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'
+						}}></Link>
 					<div className="text pt-2 mt-5">
-						<h3 className="mb-4"><Link to="#">Hawaii known as the Big Island</Link></h3>
-						<p className="mb-4">Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+						<h3 className="mb-4"><Link to="#">{title}</Link></h3>
+						<div className="mb-4">
+							{ReactHtmlParser(content)}
+						</div>
 						<div className="author mb-4 d-flex align-items-center">
 							<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/person_1.jpg")' }}></Link>
 							<div className="ml-3 info">
@@ -97,7 +123,7 @@ class Sidebar extends Component {
 
 }
 
-export default class Home extends Component {
+export default class Home extends Component<HomeProps, {}> {
 
 	constructor(props) {
 		super(props);
@@ -140,16 +166,18 @@ export default class Home extends Component {
 		// 	}, { offset: '95%' });
 		// };
 		// contentWayPoint();
+		this.props.dispatch(listArticles());
 	}
 
 	render() {
+		console.log(this.props.article);
 		return (
 			<section className="ftco-section">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">
 							<div className="row">
-								{[1, 2, 3, 4].map((item) => <ArticleItem key={item} />)}
+								{this.props.article.list.map((item) => (<ArticleItem {...item} key={item._id} />))}
 							</div>
 							<div className="row mt-5">
 								<div className="col text-center">

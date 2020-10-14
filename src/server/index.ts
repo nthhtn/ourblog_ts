@@ -8,8 +8,6 @@ import webpack from 'webpack';
 import path from 'path';
 
 import articleRouter from './routes/article';
-// import config from '../../webpack.config';
-// import config from '../../webpack.config.ts';
 import config from '../../webpack.config';
 
 const app = express();
@@ -56,6 +54,11 @@ connect(mongoURI, options).then(() => {
 	// });
 
 	app.use('/api/articles', articleRouter);
+
+	app.route('/dashboard/*')
+		.get(async (req: Request, res: Response) => {
+			res.sendFile(path.resolve(`${__dirname}/../../views/user.html`));
+		});
 
 	app.route('/dashboard')
 		.get(async (req: Request, res: Response) => {

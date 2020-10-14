@@ -35,8 +35,20 @@ const rootComponent = (
 									<li className="nav-main-item">
 										<Link className="nav-main-link active" to="/dashboard/articles">
 											<i className="nav-main-link-icon si si-docs"></i>
-											<span className="nav-main-link-name">Article</span>
+											<span className="nav-main-link-name">Blog post</span>
 										</Link>
+									</li>
+									<li className="nav-main-item">
+										<Link className="nav-main-link active" to="/dashboard/about">
+											<i className="nav-main-link-icon si si-heart"></i>
+											<span className="nav-main-link-name">About</span>
+										</Link>
+									</li>
+									<li className="nav-main-item">
+										<a className="nav-main-link active" href="/">
+											<i className="nav-main-link-icon si si-home"></i>
+											<span className="nav-main-link-name">Home</span>
+										</a>
 									</li>
 									<li className="nav-main-item">
 										<Link className="nav-main-link active" to="/logout">
@@ -56,11 +68,5 @@ const rootComponent = (
 		</BrowserRouter>
 	</Provider>
 );
-
-declare global {
-	interface Window {
-		One: { helpers: any };
-	}
-}
 
 render(rootComponent, document.getElementById('root'));

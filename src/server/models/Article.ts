@@ -5,6 +5,7 @@ import { ICategory } from './Category';
 export interface IArticle extends Document {
 	title: string;
 	content: string;
+	coverImg: string;
 	createdAt: Date;
 	updatedAt: Date;
 	authorId: IUser['_id'];
@@ -19,6 +20,9 @@ const articleSchema = new Schema({
 	content: {
 		type: String,
 		required: true
+	},
+	coverImg: {
+		type: String
 	},
 	createdAt: {
 		type: Date,

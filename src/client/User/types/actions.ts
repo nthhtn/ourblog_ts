@@ -1,10 +1,13 @@
 import Article from "./Article";
 
 export const CREATE_ARTICLE = 'CREATE_ARTICLE';
-export const LIST_ARTICLE = 'LIST_ARTICLE';
+export const LIST_ARTICLES = 'LIST_ARTICLES';
+export const GET_ARTICLE = 'GET_ARTICLE';
+export const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
+export const DELETE_ARTICLE = 'DELETE_ARTICLE';
 
-export interface ListArticleAction {
-	type: typeof LIST_ARTICLE;
+export interface listArticlesAction {
+	type: typeof LIST_ARTICLES;
 	list: Article[];
 };
 
@@ -13,6 +16,21 @@ export interface CreateArticleAction {
 	article: Article;
 };
 
-export type ArticleActionTypes = ListArticleAction | CreateArticleAction;
+export interface GetArticleAction {
+	type: typeof GET_ARTICLE;
+	article: Article;
+};
+
+export interface UpdateArticleAction {
+	type: typeof UPDATE_ARTICLE;
+	article: Article;
+};
+
+export interface DeleteArticleAction {
+	type: typeof DELETE_ARTICLE;
+	articleId: string;
+}
+
+export type ArticleActionTypes = listArticlesAction | CreateArticleAction | GetArticleAction | UpdateArticleAction | DeleteArticleAction;
 
 export type AppActions = ArticleActionTypes;

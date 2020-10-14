@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 
 import rootReducer from './reducers';
-import { AppActions } from '../User/types/actions';
+import { AppActions } from './types/actions';
 
 export type AppState = ReturnType<typeof rootReducer>;
 

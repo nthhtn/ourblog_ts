@@ -41,8 +41,8 @@ const rootComponent = (
 				<div className="overlay"></div>
 				<div className="container">
 					<div className="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-						<div className="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
-							<h1 className="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6	 }">Two silly person</h1>
+						<div className="col-md-9 ftco-animate text-center" data-scrollax="properties: { translateY: '70%' }">
+							<h1 className="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Two silly person</h1>
 							<p data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Some silly things, many silly moments, with one silly love</p>
 						</div>
 					</div>
