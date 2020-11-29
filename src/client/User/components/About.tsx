@@ -24,7 +24,7 @@ export default class About extends Component {
 				<div className="content">
 					<div className="block">
 						<div className="block-content">
-							<div>This site is under construction</div>
+							<div>This page is under construction</div>
 						</div>
 					</div>
 				</div>

@@ -18,6 +18,7 @@ interface ArticleItemProps {
 	title: string;
 	content: string;
 	coverImg: string;
+	createdAt: Date;
 };
 
 class ArticleItem extends Component<ArticleItemProps, {}> {
@@ -28,29 +29,29 @@ class ArticleItem extends Component<ArticleItemProps, {}> {
 	}
 
 	render() {
-		const { _id, title, content, coverImg } = this.props;
+		const { _id, title, content, coverImg, createdAt } = this.props;
 		return (
 			<div className="col-md-12">
 				<div className="blog-entry ftco-animate fadeInUp ftco-animated">
-					<Link to="#" className="img"
+					<Link to={`/articles/${title}`} className="img"
 						style={{
 							backgroundImage: `url(${coverImg})`, backgroundSize: 'cover',
 							backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'
 						}}></Link>
 					<div className="text pt-2 mt-5">
-						<h3 className="mb-4"><Link to="#">{title}</Link></h3>
+						<h3 className="mb-4"><Link to={`/articles/${title}`}>{title}</Link></h3>
 						<div className="mb-4">
 							{ReactHtmlParser(content)}
 						</div>
 						<div className="author mb-4 d-flex align-items-center">
 							<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/person_1.jpg")' }}></Link>
 							<div className="ml-3 info">
-								<h3><Link to="#">Dave Lewis</Link>, <span>October 04, 2018</span></h3>
+								<h3><Link to="#">Dave Lewis</Link>, <span>{createdAt}</span></h3>
 							</div>
 						</div>
 						<div className="meta-wrap d-md-flex align-items-center">
 							<div className="half">
-								<p><Link to="#" className="btn btn-primary p-3 px-xl-4 py-xl-3">Continue Reading</Link></p>
+								<p><Link to={`/articles/${title}`} className="btn btn-primary p-3 px-xl-4 py-xl-3">Continue Reading</Link></p>
 							</div>
 						</div>
 					</div>
@@ -170,7 +171,6 @@ export default class Home extends Component<HomeProps, {}> {
 	}
 
 	render() {
-		console.log(this.props.article);
 		return (
 			<section className="ftco-section">
 				<div className="container">

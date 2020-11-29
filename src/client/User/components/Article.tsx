@@ -32,7 +32,6 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 	}
 
 	onRowClick(row) {
-		console.log(row);
 		this.props.changeMode('edit', row);
 	}
 

@@ -4,7 +4,6 @@ import multer from 'multer';
 import path from 'path';
 
 import Article, { IArticle } from '../models/Article';
-import User from '../models/User';
 
 const router: Router = Router();
 const folder: string = `${__dirname}/../../../static/uploads`;
@@ -38,10 +37,15 @@ router.route('/')
 		return res.json({ success: true, result });
 	});
 
+router.route('/title/:title')
+	.get(async (req: Request, res: Response) => {
+		const article = await Article.findOne({ title: req.params.title });
+		return res.json({ success: true, result: article });
+	});
+
 router.route('/:id')
 	.get(async (req: Request, res: Response) => {
 		const article = await Article.findOne({ _id: req.params.id });
-		console.log(article);
 		return res.json({ success: true, result: article });
 	})
 	.put(async (req: Request, res: Response) => {

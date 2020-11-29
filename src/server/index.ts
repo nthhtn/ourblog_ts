@@ -8,6 +8,8 @@ import webpack from 'webpack';
 import path from 'path';
 
 import articleRouter from './routes/article';
+import userRouter from './routes/user';
+import unauthenticatedRouter from './routes/unauthenticated';
 import config from '../../webpack.config';
 
 const app = express();
@@ -24,6 +26,16 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+	console.log('serialize');
+	return done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+	console.log('deserialize');
+	return done(null, user);
+});
 
 app.use('/assets', express.static(`${__dirname}/../../static`));
 
@@ -54,6 +66,8 @@ connect(mongoURI, options).then(() => {
 	// });
 
 	app.use('/api/articles', articleRouter);
+	app.use('/api/users', userRouter);
+	app.use('/', unauthenticatedRouter);
 
 	app.route('/dashboard/*')
 		.get(async (req: Request, res: Response) => {

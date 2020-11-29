@@ -11,7 +11,7 @@ export default class About extends Component {
 
 	render() {
 		return (
-			<section className="ftco-section ftco-degree-bg">
+			<section className="ftco-section ftco-degree-bg" id="section-about">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12 ftco-animate fadeInUp ftco-animated" style={{ fontSize: '18pt', color: 'black', fontFamily: 'iCiel Altus' }}>

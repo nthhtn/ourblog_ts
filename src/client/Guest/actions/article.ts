@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 
 import Article from "../types/Article";
-import { AppActions, LIST_ARTICLES, GET_ARTICLE } from "../types/actions";
+import { AppActions, LIST_ARTICLES, GET_ARTICLE_BY_TITLE } from "../types/actions";
 
 function listArticlesSuccess(list: Article[]): AppActions {
 	return { type: LIST_ARTICLES, list };
@@ -15,14 +15,15 @@ export function listArticles(page = 1, limit = 10) {
 	};
 };
 
-function getArticleSuccess(article: Article): AppActions {
-	return { type: GET_ARTICLE, article };
+function getArticleByTitleSuccess(article: Article): AppActions {
+	return { type: GET_ARTICLE_BY_TITLE, article };
 };
 
-export function getArticle(id: string) {
+export function getArticleByTitle(title: string) {
 	return async (dispatch: Dispatch<AppActions>) => {
-		const response = await fetch(`/api/articles/${id}`, { credentials: 'same-origin' });
+		console.log(title);
+		const response = await fetch(`/api/articles/title/${title}`, { credentials: 'same-origin' });
 		const responseJson = await response.json();
-		return dispatch(getArticleSuccess(responseJson.result));
+		return dispatch(getArticleByTitleSuccess(responseJson.result));
 	};
 };
