@@ -71,7 +71,7 @@ class Sidebar extends Component {
 
 	render() {
 		return (
-			<div className="col-lg-4 sidebar ftco-animate">
+			<div className="col-lg-4 sidebar ftco-animate fadeInUp ftco-animated">
 				<div className="sidebar-box">
 					<form action="#" className="search-form">
 						<div className="form-group">
@@ -80,7 +80,7 @@ class Sidebar extends Component {
 						</div>
 					</form>
 				</div>
-				<div className="sidebar-box ftco-animate">
+				<div className="sidebar-box ftco-animate fadeInUp ftco-animated">
 					<h3>Categories</h3>
 					<ul className="categories">
 						<li><Link to="#">Africa <span>(6)</span></Link></li>
@@ -91,7 +91,7 @@ class Sidebar extends Component {
 						<li><Link to="#">South America <span>(5)</span></Link></li>
 					</ul>
 				</div>
-				<div className="sidebar-box ftco-animate">
+				<div className="sidebar-box ftco-animate fadeInUp ftco-animated">
 					<h3>Popular Articles</h3>
 					<div className="block-21 mb-4 d-flex">
 						<Link to="#" className="blog-img mr-4" style={{ backgroundImage: 'url("/assets/explore/images/image_1.jpg")' }}></Link>
@@ -105,7 +105,7 @@ class Sidebar extends Component {
 						</div>
 					</div>
 				</div>
-				<div className="sidebar-box ftco-animate">
+				<div className="sidebar-box ftco-animate fadeInUp ftco-animated">
 					<h3>Tag Cloud</h3>
 					<ul className="tagcloud">
 						<Link to="#" className="tag-cloud-link">dish</Link>

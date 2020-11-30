@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 
 import Article, { IArticle } from '../models/Article';
+import { IUser } from '../models/User';
 
 const router: Router = Router();
 const folder: string = `${__dirname}/../../../static/uploads`;
@@ -26,8 +27,9 @@ router.route('/')
 			})
 		}).single('file'),
 		async (req: RequestWithMulter, res: Response) => {
-			const { title, content } = req.body;
-			const fields = { title, content, coverImg: `/assets/uploads/img/cover/${req.file.filename}` };
+			console.log(req.user);
+			const { title, content, categoryId } = req.body;
+			const fields = { title, content, coverImg: `/assets/uploads/img/cover/${req.file.filename}`, categoryId, authorId: (req.user as IUser)._id };
 			const article = new Article(fields);
 			await article.save();
 			return res.json({ success: true, result: article });

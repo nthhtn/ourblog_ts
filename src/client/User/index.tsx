@@ -35,7 +35,7 @@ const rootComponent = (
 									<li className="nav-main-item">
 										<Link className="nav-main-link active" to="/dashboard/articles">
 											<i className="nav-main-link-icon si si-docs"></i>
-											<span className="nav-main-link-name">Blog post</span>
+											<span className="nav-main-link-name">Article</span>
 										</Link>
 									</li>
 									<li className="nav-main-item">
@@ -51,10 +51,10 @@ const rootComponent = (
 										</a>
 									</li>
 									<li className="nav-main-item">
-										<Link className="nav-main-link active" to="/logout">
+										<a className="nav-main-link active" href="/logout">
 											<i className="nav-main-link-icon si si-logout"></i>
 											<span className="nav-main-link-name">Logout</span>
-										</Link>
+										</a>
 									</li>
 								</ul>
 							</div>

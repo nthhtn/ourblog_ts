@@ -9,6 +9,10 @@ export default class About extends Component {
 		this.state = {};
 	}
 
+	componentDidMount(){
+		document.getElementById('section-about').scrollIntoView({ behavior: 'smooth' });
+	}
+
 	render() {
 		return (
 			<section className="ftco-section ftco-degree-bg" id="section-about">

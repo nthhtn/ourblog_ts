@@ -19,7 +19,7 @@ function createArticleSuccess(article: Article): AppActions {
 	return { type: CREATE_ARTICLE, article };
 };
 
-export function createArticle(article: { title: string; content: string; file: File }) {
+export function createArticle(article: { title: string; content: string; file: File, categoryId: string }) {
 	return async (dispatch: Dispatch<AppActions>) => {
 		let formdata = new FormData();
 		Object.keys(article).map((key) => formdata.append(key, article[key]));

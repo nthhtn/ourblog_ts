@@ -8,8 +8,11 @@ import { stateToHTML } from 'draft-js-export-html';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Pagination from 'react-js-pagination';
 
-import { listArticles, createArticle, updateArticle, deleteArticle } from '../actions/article';
+import { listArticles, createArticle, updateArticle, getArticle } from '../actions/article';
+import { listCategories } from '../actions/category';
 import Article from '../types/Article';
+import Category from '../types/Category';
+import article from 'src/client/Guest/reducers/article';
 
 interface ArticleViewProps {
 	changeMode?: Function;
@@ -47,7 +50,7 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 				<div className="bg-body-light">
 					<div className="content content-full">
 						<div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-							<h1 className="flex-sm-fill h3 my-2">List of blog post</h1>
+							<h1 className="flex-sm-fill h3 my-2">List of article</h1>
 						</div>
 					</div>
 				</div>
@@ -56,7 +59,7 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 						<div className="block-content">
 							<button type="button" className="btn btn-success mr-1 mb-3"
 								onClick={() => this.props.changeMode('add')}>
-								<i className="fa fa-fw fa-plus mr-1"></i> Write a blog post
+								<i className="fa fa-fw fa-plus mr-1"></i> Write an article
 							</button>
 							<BootstrapTable data={list} hover options={options} bodyStyle={{ cursor: 'pointer' }}>
 								<TableHeaderColumn dataField='_id' isKey={true} hidden></TableHeaderColumn>
@@ -86,6 +89,8 @@ interface ContentEditorProps extends ArticleViewProps {
 	articleId?: string;
 	title?: string;
 	content?: string;
+	dispatch?: ThunkDispatch<any, any, AnyAction>;
+	category?: { list: Category[] };
 }
 
 class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
@@ -101,8 +106,14 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		};
 	}
 
-	componentDidMount() {
-		$('#input-title').val(this.props.title);
+	async componentDidMount() {
+		this.props.dispatch(listCategories());
+		if (this.props.editorMode == 'edit' && this.props.articleId) {
+			await this.props.dispatch(getArticle(this.props.articleId));
+			const { current } = this.props.article;
+			$('#input-title').val(current?.title);
+			$('#input-category').val(current?.categoryId);
+		}
 	}
 
 	onEditorChange(editorState) {
@@ -119,11 +130,12 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		const contentState: ContentState = this.state.editorState.getCurrentContent();
 		const content = stateToHTML(contentState);
 		const file = this.state.file;
-		if (!title || !content || !file) {
+		const categoryId = ($('#input-category').val() as string).trim();
+		if (!title || !content || !file || categoryId == '0') {
 			return $('.input-error').html('Missing required field(s)');
 		}
 		$('.input-error').html('');
-		await this.props.dispatch(createArticle({ title, content, file: this.state.file }));
+		await this.props.dispatch(createArticle({ title, content, file: this.state.file, categoryId }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
 	}
 
@@ -138,12 +150,13 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 
 	render() {
 		const { editorState, coverImg } = this.state;
+		const listCategories = this.props.category?.list;
 		return (
 			<main id="main-container">
 				<div className="bg-body-light">
 					<div className="content content-full">
 						<div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-							<h1 className="flex-sm-fill h3 my-2">Write a new blog post</h1>
+							<h1 className="flex-sm-fill h3 my-2">Write a new article</h1>
 						</div>
 					</div>
 				</div>
@@ -171,11 +184,11 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 									<div className="row" style={{ margin: 0 }}>
 										<div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
 											<label>Category *</label>
-											<select className="custom-select">
+											<select className="custom-select" id="input-category">
 												<option value="0">Please select</option>
-												<option value="1">Option #1</option>
-												<option value="2">Option #2</option>
-												<option value="3">Option #3</option>
+												{listCategories.map((category) =>
+													(<option key={category._id} value={category._id}>{category.displayName}</option>))
+												}
 											</select>
 										</div>
 										<div className="form-group col-md-6">

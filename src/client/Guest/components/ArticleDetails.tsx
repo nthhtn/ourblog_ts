@@ -31,6 +31,7 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 
 	async componentDidMount() {
 		await this.props.dispatch(getArticleByTitle(this.state.title));
+		document.getElementById('article-title').scrollIntoView({ behavior: 'smooth' });
 	}
 
 	render() {
@@ -40,7 +41,7 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8 ftco-animate fadeInUp ftco-animated">
-							<h2 className="mb-3 font-weight-bold">{current?.title}</h2>
+							<h2 className="mb-3 font-weight-bold" id="article-title">{current?.title}</h2>
 							{current && <p><img src={current.coverImg} alt="" className="img-fluid" /></p>}
 							{ReactHtmlParser(current?.content)}
 							<div className="tag-widget post-tag-container mb-5 mt-5">

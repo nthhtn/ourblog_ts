@@ -33,4 +33,15 @@ export interface DeleteArticleAction {
 
 export type ArticleActionTypes = listArticlesAction | CreateArticleAction | GetArticleAction | UpdateArticleAction | DeleteArticleAction;
 
-export type AppActions = ArticleActionTypes;
+import Category from './Category';
+
+export const LIST_CATEGORIES = 'LIST_CATEGORIES';
+
+export interface ListCategoriesAction {
+	type: typeof LIST_CATEGORIES;
+	list: Category[];
+};
+
+export type CategoryActionTypes = ListCategoriesAction;
+
+export type AppActions = ArticleActionTypes | CategoryActionTypes;

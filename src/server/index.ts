@@ -8,9 +8,11 @@ import webpack from 'webpack';
 import path from 'path';
 
 import articleRouter from './routes/article';
+import categoryRouter from './routes/category';
 import userRouter from './routes/user';
 import unauthenticatedRouter from './routes/unauthenticated';
 import config from '../../webpack.config';
+import { generateCategories } from './helpers/init';
 
 const app = express();
 
@@ -55,8 +57,12 @@ const options: ConnectionOptions = {
 	useFindAndModify: false,
 	useUnifiedTopology: true,
 };
-connect(mongoURI, options).then(() => {
+const viewFolder = `${__dirname}/../../views`;
+
+connect(mongoURI, options).then(async () => {
 	console.log('MongoDB Connected...');
+
+	await generateCategories();
 
 	// @route   GET /
 	// @desc    Test Base API
@@ -66,22 +72,29 @@ connect(mongoURI, options).then(() => {
 	// });
 
 	app.use('/api/articles', articleRouter);
+	app.use('/api/categories', categoryRouter);
 	app.use('/api/users', userRouter);
 	app.use('/', unauthenticatedRouter);
 
+	app.route('/logout')
+		.get((req: Request, res: Response) => {
+			if (req.isAuthenticated()) { req.logOut(); }
+			return res.sendFile(path.resolve(`${viewFolder}/guest.html`));
+		});
+
 	app.route('/dashboard/*')
 		.get(async (req: Request, res: Response) => {
-			res.sendFile(path.resolve(`${__dirname}/../../views/user.html`));
+			return req.isAuthenticated() ? res.sendFile(path.resolve(`${viewFolder}/user.html`)) : res.sendFile(path.resolve(`${viewFolder}/guest.html`));
 		});
 
 	app.route('/dashboard')
 		.get(async (req: Request, res: Response) => {
-			res.sendFile(path.resolve(`${__dirname}/../../views/user.html`));
+			return req.isAuthenticated() ? res.sendFile(path.resolve(`${viewFolder}/user.html`)) : res.sendFile(path.resolve(`${viewFolder}/guest.html`));
 		});
 
 	app.route('*')
 		.get(async (req: Request, res: Response) => {
-			res.sendFile(path.resolve(`${__dirname}/../../views/guest.html`));
+			res.sendFile(path.resolve(`${viewFolder}/guest.html`));
 		});
 
 	const port = app.get('port');

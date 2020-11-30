@@ -118,6 +118,10 @@ store.dispatch(getMyProfile())
 										</div>
 									</li>
 									<li className="nav-item"><Link to="/about" className="nav-link">About Us</Link></li>
+									{
+										store.getState().user.me &&
+										(<li className="nav-item"><a href="/dashboard" className="nav-link">Dashboard</a></li>)
+									}
 								</ul>
 							</div>
 							{
@@ -125,13 +129,16 @@ store.dispatch(getMyProfile())
 									(<button className="btn btn-primary py-3 px-5" data-toggle="modal" data-target="#modal-login">
 										<i className="fas fa-sign-in-alt"></i> Login
 									</button>)
-									: (<Link to='/logout'><button className="btn btn-primary py-3 px-5">
+									: (<a href='/logout'><button className="btn btn-primary py-3 px-5">
 										<i className="fas fa-sign-out-alt"></i> Logout
-									</button></Link>)
+									</button></a>)
 							}
 						</div>
 					</nav>
-					<Login />
+					{
+						!store.getState().user.me &&
+						(<Login />)
+					}
 					<div className="hero-wrap js-fullheight" style={{ backgroundImage: 'url("/assets/img/cover.JPG")', height: '962px' }} id="cover-wrapper">
 						<div className="overlay"></div>
 						<div className="container">
