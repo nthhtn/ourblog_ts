@@ -8,6 +8,8 @@ export const GET_ARTICLE_BY_TITLE = 'GET_ARTICLE_BY_TITLE';
 export interface listArticlesAction {
 	type: typeof LIST_ARTICLES;
 	list: Article[];
+	page: number;
+	count: number;
 };
 
 export interface getArticleByTitleAction {

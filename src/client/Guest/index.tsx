@@ -172,5 +172,4 @@ store.dispatch(getMyProfile())
 
 		};
 		document.body.appendChild(script);
-		console.log(store.getState());
 	});

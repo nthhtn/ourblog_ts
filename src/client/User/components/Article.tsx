@@ -17,7 +17,7 @@ import article from 'src/client/Guest/reducers/article';
 interface ArticleViewProps {
 	changeMode?: Function;
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	article?: { list: Article[], current: Article };
+	article?: { list: Article[]; current: Article };
 };
 
 interface ArticleViewState {
@@ -50,7 +50,7 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 				<div className="bg-body-light">
 					<div className="content content-full">
 						<div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-							<h1 className="flex-sm-fill h3 my-2">List of article</h1>
+							<h1 className="flex-sm-fill h3 my-2">List of Articles</h1>
 						</div>
 					</div>
 				</div>
@@ -59,7 +59,7 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 						<div className="block-content">
 							<button type="button" className="btn btn-success mr-1 mb-3"
 								onClick={() => this.props.changeMode('add')}>
-								<i className="fa fa-fw fa-plus mr-1"></i> Write an article
+								<i className="fa fa-fw fa-plus mr-1"></i> Write New Article
 							</button>
 							<BootstrapTable data={list} hover options={options} bodyStyle={{ cursor: 'pointer' }}>
 								<TableHeaderColumn dataField='_id' isKey={true} hidden></TableHeaderColumn>
@@ -111,6 +111,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		if (this.props.editorMode == 'edit' && this.props.articleId) {
 			await this.props.dispatch(getArticle(this.props.articleId));
 			const { current } = this.props.article;
+			this.setState({ coverImg: current?.coverImg });
 			$('#input-title').val(current?.title);
 			$('#input-category').val(current?.categoryId);
 		}

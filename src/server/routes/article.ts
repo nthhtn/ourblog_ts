@@ -35,8 +35,11 @@ router.route('/')
 			return res.json({ success: true, result: article });
 		})
 	.get(async (req: Request, res: Response) => {
-		const result: Array<IArticle> = await Article.find({}).exec();
-		return res.json({ success: true, result });
+		const page: number = req.query.page ? Number(req.query.page) : 1;
+		const limit: number = req.query.limit ? Number(req.query.limit) : 5;
+		const result: Array<IArticle> = await Article.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).exec();
+		const count: number = await Article.countDocuments({});
+		return res.json({ success: true, result, count });
 	});
 
 router.route('/title/:title')

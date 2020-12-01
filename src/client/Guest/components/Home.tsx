@@ -8,11 +8,6 @@ import ReactHtmlParser from 'react-html-parser';
 import { listArticles } from '../actions/article';
 import Article from '../types/Article';
 
-interface HomeProps {
-	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	article?: { list: Article[], current: Article };
-};
-
 interface ArticleItemProps {
 	_id: string;
 	title: string;
@@ -124,11 +119,20 @@ class Sidebar extends Component {
 
 }
 
-export default class Home extends Component<HomeProps, {}> {
+interface HomeProps {
+	dispatch?: ThunkDispatch<any, any, AnyAction>;
+	article?: { list: Article[]; current: Article; page: number; count: number };
+};
+
+interface HomeState {
+	activePage: number;
+};
+
+export default class Home extends Component<HomeProps, HomeState> {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { activePage: 1 };
 	}
 
 	componentDidMount() {
@@ -168,6 +172,12 @@ export default class Home extends Component<HomeProps, {}> {
 		// };
 		// contentWayPoint();
 		this.props.dispatch(listArticles());
+		// document.getElementById('section-about').scrollIntoView({ behavior: 'smooth' });
+	}
+
+	async onPageChange(page) {
+		this.props.dispatch(listArticles(page, 5));
+		this.setState({ activePage: page });
 	}
 
 	render() {
@@ -182,13 +192,14 @@ export default class Home extends Component<HomeProps, {}> {
 							<div className="row mt-5">
 								<div className="col text-center">
 									<div className="block-27">
-										<ul>
-											<li><Link to="#">&lt;</Link></li>
-											<li className="active"><span>1</span></li>
-											<li><Link to="#">2</Link></li>
-											<li><Link to="#">3</Link></li>
-											<li><Link to="#">&gt;</Link></li>
-										</ul>
+										<Pagination
+											innerClass='block-27'
+											activePage={this.state.activePage}
+											itemsCountPerPage={5}
+											totalItemsCount={this.props.article.count}
+											pageRangeDisplayed={3}
+											onChange={this.onPageChange.bind(this)}
+										/>
 									</div>
 								</div>
 							</div>

@@ -13,7 +13,7 @@ interface MatchParams {
 
 interface ArticleDetailsProps extends RouteComponentProps<MatchParams> {
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	article?: { list: Article[], current: Article };
+	article?: { list: Article[]; current: Article };
 };
 
 interface ArticleDetailsState {

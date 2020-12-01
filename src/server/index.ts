@@ -84,12 +84,14 @@ connect(mongoURI, options).then(async () => {
 
 	app.route('/dashboard/*')
 		.get(async (req: Request, res: Response) => {
-			return req.isAuthenticated() ? res.sendFile(path.resolve(`${viewFolder}/user.html`)) : res.sendFile(path.resolve(`${viewFolder}/guest.html`));
+			const filename = path.resolve(`${viewFolder}/${req.isAuthenticated() ? 'user' : 'guest'}.html`);
+			return res.sendFile(filename);
 		});
 
 	app.route('/dashboard')
 		.get(async (req: Request, res: Response) => {
-			return req.isAuthenticated() ? res.sendFile(path.resolve(`${viewFolder}/user.html`)) : res.sendFile(path.resolve(`${viewFolder}/guest.html`));
+			const filename = path.resolve(`${viewFolder}/${req.isAuthenticated() ? 'user' : 'guest'}.html`);
+			return res.sendFile(filename);
 		});
 
 	app.route('*')
