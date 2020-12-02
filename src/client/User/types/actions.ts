@@ -9,6 +9,8 @@ export const DELETE_ARTICLE = 'DELETE_ARTICLE';
 export interface listArticlesAction {
 	type: typeof LIST_ARTICLES;
 	list: Article[];
+	page: number;
+	count: number;
 };
 
 export interface CreateArticleAction {

@@ -7,17 +7,17 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { stateToHTML } from 'draft-js-export-html';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Pagination from 'react-js-pagination';
+import { Typeahead, TypeaheadMenu } from 'react-bootstrap-typeahead';
 
 import { listArticles, createArticle, updateArticle, getArticle } from '../actions/article';
 import { listCategories } from '../actions/category';
 import Article from '../types/Article';
 import Category from '../types/Category';
-import article from 'src/client/Guest/reducers/article';
 
 interface ArticleViewProps {
 	changeMode?: Function;
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	article?: { list: Article[]; current: Article };
+	article?: { list: Article[]; current: Article; page: number; count: number };
 };
 
 interface ArticleViewState {
@@ -27,19 +27,31 @@ interface ArticleViewState {
 	content: string;
 };
 
-class ArticleTable extends Component<ArticleViewProps, {}> {
+interface ArticleTableState {
+	activePage: number;
+};
+
+class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { activePage: 1 };
 	}
 
 	onRowClick(row) {
 		this.props.changeMode('edit', row);
 	}
 
+	async onPageChange(page) {
+		this.props.dispatch(listArticles(page, 10));
+		this.setState({ activePage: page });
+	}
+
 	render() {
 		const list = this.props.article.list.map((item) => {
+			let span = document.createElement('span');
+			span.innerHTML = item.content;
+			item.content = span.innerText;
 			return item;
 		});
 		const options = {
@@ -69,6 +81,15 @@ class ArticleTable extends Component<ArticleViewProps, {}> {
 								<TableHeaderColumn dataField='content' width="50%">Brief Content</TableHeaderColumn>
 								<TableHeaderColumn dataField='createdAt' width="30%">Created At</TableHeaderColumn>
 							</BootstrapTable>
+							<Pagination
+								itemClass="page-item"
+								linkClass="page-link"
+								activePage={this.state.activePage}
+								itemsCountPerPage={10}
+								totalItemsCount={this.props.article?.count}
+								pageRangeDisplayed={3}
+								onChange={this.onPageChange.bind(this)}
+							/>
 						</div>
 					</div>
 				</div>
@@ -82,6 +103,8 @@ interface ContentEditorState {
 	editorState: EditorState;
 	coverImg: string;
 	file: File;
+	tagOptions: string[];
+	tagSelected: string[];
 }
 
 interface ContentEditorProps extends ArticleViewProps {
@@ -102,7 +125,9 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		this.state = {
 			editorState: EditorState.createWithContent(contentState),
 			coverImg: '',
-			file: null
+			file: null,
+			tagOptions: [],
+			tagSelected: []
 		};
 	}
 
@@ -145,13 +170,36 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		const title = ($('#input-title').val() as string).trim();
 		const contentState: ContentState = this.state.editorState.getCurrentContent();
 		const content = stateToHTML(contentState);
-		await this.props.dispatch(updateArticle(id, { title, content }));
+		const categoryId = ($('#input-category').val() as string).trim();
+		if (!title || !content || categoryId == '0') {
+			return $('.input-error').html('Missing required field(s)');
+		}
+		await this.props.dispatch(updateArticle(id, { title, content, categoryId }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
+	}
+
+	onTagChange() {
+
+	}
+
+	onTagInputChange(string, e) {
+		if (string.indexOf(',') >= 0) {
+			const newtag = string.split(',')[0].trim();
+			(this.refs.changeTag as Typeahead).clear();
+			this.setState({
+				tagOptions: [...this.state.tagOptions, newtag],
+				tagSelected: [...this.state.tagSelected, newtag]
+			});
+		}
 	}
 
 	render() {
 		const { editorState, coverImg } = this.state;
 		const listCategories = this.props.category?.list;
+		const tagState = {
+			options: this.state.tagOptions,
+			selected: this.state.tagSelected
+		};
 		return (
 			<main id="main-container">
 				<div className="bg-body-light">
@@ -182,6 +230,26 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 										ref='contentEditor'
 										onEditorStateChange={this.onEditorChange.bind(this)}
 									/>
+									<div className="row">
+										<div className="form-group col-md-12">
+											<label htmlFor="change-tag">Tags</label>
+											<Typeahead
+												{...tagState}
+												id="change-tag"
+												multiple
+												ref='changeTag'
+												onChange={this.onTagChange.bind(this)}
+												onInputChange={this.onTagInputChange.bind(this)}
+												renderMenu={(results, menuProps) => {
+													// Hide the menu when there are no results.
+													if (!results.length) {
+														return null;
+													}
+													return <TypeaheadMenu {...menuProps} options={results} />;
+												}}
+											/>
+										</div>
+									</div>
 									<div className="row" style={{ margin: 0 }}>
 										<div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
 											<label>Category *</label>

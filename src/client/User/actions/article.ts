@@ -3,15 +3,15 @@ import { Dispatch } from "redux";
 import Article from "../types/Article";
 import { AppActions, LIST_ARTICLES, CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE, DELETE_ARTICLE } from "../types/actions";
 
-function listArticlesSuccess(list: Article[]): AppActions {
-	return { type: LIST_ARTICLES, list };
+function listArticlesSuccess(list: Article[], page: number, count: number): AppActions {
+	return { type: LIST_ARTICLES, list, page, count };
 };
 
 export function listArticles(page = 1, limit = 10) {
 	return async (dispatch: Dispatch<AppActions>) => {
-		const response = await fetch(`/api/articles`, { credentials: 'same-origin' });
+		const response = await fetch(`/api/articles?page=${page}&limit=${limit}`, { credentials: 'same-origin' });
 		const responseJson = await response.json();
-		return dispatch(listArticlesSuccess(responseJson.result));
+		return dispatch(listArticlesSuccess(responseJson.result, page, responseJson.count));
 	};
 };
 
@@ -49,7 +49,7 @@ function updateArticleSuccess(article: Article): AppActions {
 	return { type: UPDATE_ARTICLE, article };
 };
 
-export function updateArticle(id: string, article: { title: string; content: string }) {
+export function updateArticle(id: string, article: { title: string; content: string, categoryId: string }) {
 	return async (dispatch: Dispatch<AppActions>) => {
 		const response = await fetch(`/api/articles/${id}`, {
 			credentials: 'same-origin',
