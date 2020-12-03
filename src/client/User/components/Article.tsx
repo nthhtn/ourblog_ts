@@ -157,11 +157,12 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		const content = stateToHTML(contentState);
 		const file = this.state.file;
 		const categoryId = ($('#input-category').val() as string).trim();
+		const tags = this.state.tagSelected;
 		if (!title || !content || !file || categoryId == '0') {
 			return $('.input-error').html('Missing required field(s)');
 		}
 		$('.input-error').html('');
-		await this.props.dispatch(createArticle({ title, content, file: this.state.file, categoryId }));
+		await this.props.dispatch(createArticle({ title, content, file: this.state.file, categoryId, tags }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
 	}
 
@@ -178,14 +179,17 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
 	}
 
-	onTagChange() {
-
+	onTagChange(selected) {
+		this.setState({
+			tagOptions: selected,
+			tagSelected: selected
+		});
 	}
 
 	onTagInputChange(string, e) {
 		if (string.indexOf(',') >= 0) {
 			const newtag = string.split(',')[0].trim();
-			(this.refs.changeTag as Typeahead).clear();
+			(this.refs.inputTag as Typeahead).clear();
 			this.setState({
 				tagOptions: [...this.state.tagOptions, newtag],
 				tagSelected: [...this.state.tagSelected, newtag]
@@ -232,12 +236,12 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 									/>
 									<div className="row">
 										<div className="form-group col-md-12">
-											<label htmlFor="change-tag">Tags</label>
+											<label htmlFor="input-tag">Tags (delimited by ,)</label>
 											<Typeahead
 												{...tagState}
-												id="change-tag"
+												id="input-tag"
 												multiple
-												ref='changeTag'
+												ref='inputTag'
 												onChange={this.onTagChange.bind(this)}
 												onInputChange={this.onTagInputChange.bind(this)}
 												renderMenu={(results, menuProps) => {

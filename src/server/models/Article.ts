@@ -1,6 +1,8 @@
 import { Document, Model, model, Schema } from 'mongoose';
+
 import { IUser } from './User';
 import { ICategory } from './Category';
+import { ITag } from './Tag';
 
 export interface IArticle extends Document {
 	title: string;
@@ -10,6 +12,7 @@ export interface IArticle extends Document {
 	updatedAt: Date;
 	authorId: IUser['_id'];
 	categoryId: ICategory['_id'];
+	tags: ITag['_id'][];
 };
 
 const articleSchema = new Schema({
@@ -39,7 +42,11 @@ const articleSchema = new Schema({
 	categoryId: {
 		type: Schema.Types.ObjectId,
 		ref: 'Category'
-	}
+	},
+	tags: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Tag'
+	}]
 });
 
 const Article: Model<IArticle> = model('Article', articleSchema);

@@ -7,4 +7,5 @@ export default interface Article {
 	updatedAt: Date;
 	authorId: string;
 	categoryId: string;
+	tags: string[];
 };
