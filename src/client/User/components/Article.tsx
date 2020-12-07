@@ -12,6 +12,7 @@ import { Typeahead, TypeaheadMenu } from 'react-bootstrap-typeahead';
 import { listArticles, createArticle, updateArticle, getArticle } from '../actions/article';
 import { listCategories } from '../actions/category';
 import Article from '../types/Article';
+import Tag from '../types/Tag';
 import Category from '../types/Category';
 
 interface ArticleViewProps {
@@ -103,8 +104,8 @@ interface ContentEditorState {
 	editorState: EditorState;
 	coverImg: string;
 	file: File;
-	tagOptions: string[];
-	tagSelected: string[];
+	tagOptions: Tag[];
+	tagSelected: Tag[];
 }
 
 interface ContentEditorProps extends ArticleViewProps {
@@ -164,6 +165,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		$('.input-error').html('');
 		await this.props.dispatch(createArticle({ title, content, file: this.state.file, categoryId, tags }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
+		(this.refs.inputTag as Typeahead).clear();
 	}
 
 	async updateArticle() {
@@ -175,7 +177,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		if (!title || !content || categoryId == '0') {
 			return $('.input-error').html('Missing required field(s)');
 		}
-		await this.props.dispatch(updateArticle(id, { title, content, categoryId }));
+		await this.props.dispatch(updateArticle(id, { title, content, file: null, categoryId, tags: [] }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
 	}
 
@@ -188,7 +190,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 
 	onTagInputChange(string, e) {
 		if (string.indexOf(',') >= 0) {
-			const newtag = string.split(',')[0].trim();
+			const newtag = { _id: '', tagValue: string.split(',')[0].trim() };
 			(this.refs.inputTag as Typeahead).clear();
 			this.setState({
 				tagOptions: [...this.state.tagOptions, newtag],
@@ -241,6 +243,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 												{...tagState}
 												id="input-tag"
 												multiple
+												labelKey="tagValue"
 												ref='inputTag'
 												onChange={this.onTagChange.bind(this)}
 												onInputChange={this.onTagInputChange.bind(this)}

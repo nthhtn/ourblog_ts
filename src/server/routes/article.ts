@@ -57,7 +57,7 @@ router.route('/')
 
 router.route('/title/:title')
 	.get(async (req: Request, res: Response) => {
-		const article = await Article.findOne({ title: req.params.title });
+		const article = await Article.findOne({ title: req.params.title }).populate({ path: 'tags', select: 'tagValue' }).exec();
 		return res.json({ success: true, result: article });
 	});
 

@@ -1,3 +1,5 @@
+import Tag from './Tag';
+
 export default interface Article {
 	_id: string;
 	title: string;
@@ -7,4 +9,5 @@ export default interface Article {
 	updatedAt: Date;
 	authorId: string;
 	categoryId: string;
+	tags: Tag[];
 };

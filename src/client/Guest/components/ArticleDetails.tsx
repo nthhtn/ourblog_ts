@@ -46,10 +46,9 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 							{ReactHtmlParser(current?.content)}
 							<div className="tag-widget post-tag-container mb-5 mt-5">
 								<div className="tagcloud">
-									<a href="#" className="tag-cloud-link">Life</a>
-									<a href="#" className="tag-cloud-link">Sport</a>
-									<a href="#" className="tag-cloud-link">Tech</a>
-									<a href="#" className="tag-cloud-link">Travel</a>
+									{current?.tags.map((tag) => (
+										<a href="#" key={tag.tagValue} className="tag-cloud-link">{tag.tagValue}</a>
+									))}
 								</div>
 							</div>
 							<div className="about-author d-flex p-4 bg-light">
