@@ -7,7 +7,7 @@ export default interface Article {
 	coverImg: string;
 	createdAt: Date;
 	updatedAt: Date;
-	authorId: string;
+	authorId: { _id: string; fullName: string };
 	categoryId: string;
 	tags: Tag[];
 };

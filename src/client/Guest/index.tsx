@@ -105,16 +105,16 @@ store.dispatch(getMyProfile())
 									<li className="nav-item dropdown">
 										<Link className="nav-link dropdown-toggle" to="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Our diary</Link>
 										<div className="dropdown-menu" aria-labelledby="dropdown04">
-											<Link className="dropdown-item" to="post-right-sidebar.html">Silly things</Link>
-											<Link className="dropdown-item" to="post-left-sidebar.html">Silly love</Link>
-											<Link className="dropdown-item" to="post-no-sidebar.html">Silly trips</Link>
+											<Link className="dropdown-item" to="/articles/category/Silly things">Silly things</Link>
+											<Link className="dropdown-item" to="/articles/category/Silly love">Silly love</Link>
+											<Link className="dropdown-item" to="/articles/category/Silly trips">Silly trips</Link>
 										</div>
 									</li>
 									<li className="nav-item dropdown">
 										<Link className="nav-link dropdown-toggle" to="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Self story</Link>
 										<div className="dropdown-menu" aria-labelledby="dropdown04">
-											<Link className="dropdown-item" to="destination.html">Silly gf</Link>
-											<Link className="dropdown-item" to="tag.html">Silly bf</Link>
+											<Link className="dropdown-item" to="/articles/category/Silly gf">Silly gf</Link>
+											<Link className="dropdown-item" to="/articles/category/Silly bf">Silly bf</Link>
 										</div>
 									</li>
 									<li className="nav-item"><Link to="/about" className="nav-link">About Us</Link></li>

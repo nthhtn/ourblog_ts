@@ -56,7 +56,7 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 									<img src="/assets/explore/images/person_1.jpg" alt="Image placeholder" className="img-fluid mb-4" />
 								</div>
 								<div className="desc">
-									<h3>George Washington</h3>
+									<h3>{current?.authorId.fullName}</h3>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
 								</div>
 							</div>

@@ -76,10 +76,25 @@ class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 							</button>
 							<BootstrapTable data={list} hover options={options} bodyStyle={{ cursor: 'pointer' }}>
 								<TableHeaderColumn dataField='_id' isKey={true} hidden></TableHeaderColumn>
-								<TableHeaderColumn dataField='title' columnClassName="font-w600" tdStyle={{ color: '#5c80d1' }} width="20%">
+								<TableHeaderColumn dataField='title' columnClassName="font-w600" width="20%"
+									tdStyle={{
+										color: '#5c80d1',
+										whiteSpace: 'nowrap',
+										textOverflow: 'ellipsis',
+										overflow: 'hidden',
+										maxWidth: 0
+									}}>
 									Title
 								</TableHeaderColumn>
-								<TableHeaderColumn dataField='content' width="50%">Brief Content</TableHeaderColumn>
+								<TableHeaderColumn dataField='content' width="50%" columnClassName="article-brief"
+									tdStyle={{
+										whiteSpace: 'nowrap',
+										textOverflow: 'ellipsis',
+										overflow: 'hidden',
+										maxWidth: 0
+									}}>
+									Brief Content
+								</TableHeaderColumn>
 								<TableHeaderColumn dataField='createdAt' width="30%">Created At</TableHeaderColumn>
 							</BootstrapTable>
 							<Pagination
@@ -137,7 +152,11 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		if (this.props.editorMode == 'edit' && this.props.articleId) {
 			await this.props.dispatch(getArticle(this.props.articleId));
 			const { current } = this.props.article;
-			this.setState({ coverImg: current?.coverImg });
+			this.setState({
+				coverImg: current?.coverImg,
+				tagOptions: current?.tags,
+				tagSelected: current?.tags
+			});
 			$('#input-title').val(current?.title);
 			$('#input-category').val(current?.categoryId);
 		}
@@ -174,10 +193,11 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 		const contentState: ContentState = this.state.editorState.getCurrentContent();
 		const content = stateToHTML(contentState);
 		const categoryId = ($('#input-category').val() as string).trim();
+		const tags = this.state.tagSelected;
 		if (!title || !content || categoryId == '0') {
 			return $('.input-error').html('Missing required field(s)');
 		}
-		await this.props.dispatch(updateArticle(id, { title, content, file: null, categoryId, tags: [] }));
+		await this.props.dispatch(updateArticle(id, { title, content, file: null, categoryId, tags }));
 		this.props.changeMode('view', { _id: null, title: '', content: '' });
 	}
 

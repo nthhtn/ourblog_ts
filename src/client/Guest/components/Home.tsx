@@ -8,15 +8,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { listArticles } from '../actions/article';
 import Article from '../types/Article';
 
-interface ArticleItemProps {
-	_id: string;
-	title: string;
-	content: string;
-	coverImg: string;
-	createdAt: Date;
-};
-
-class ArticleItem extends Component<ArticleItemProps, {}> {
+class ArticleItem extends Component<Article, {}> {
 
 	constructor(props) {
 		super(props);
@@ -24,7 +16,7 @@ class ArticleItem extends Component<ArticleItemProps, {}> {
 	}
 
 	render() {
-		const { _id, title, content, coverImg, createdAt } = this.props;
+		const { _id, title, content, coverImg, createdAt, authorId } = this.props;
 		return (
 			<div className="col-md-12">
 				<div className="blog-entry ftco-animate fadeInUp ftco-animated">
@@ -41,7 +33,7 @@ class ArticleItem extends Component<ArticleItemProps, {}> {
 						<div className="author mb-4 d-flex align-items-center">
 							<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/person_1.jpg")' }}></Link>
 							<div className="ml-3 info">
-								<h3><Link to="#">Dave Lewis</Link>, <span>{createdAt}</span></h3>
+								<h3><Link to="#">{authorId?.fullName}</Link>, <span>{createdAt}</span></h3>
 							</div>
 						</div>
 						<div className="meta-wrap d-md-flex align-items-center">
@@ -86,7 +78,7 @@ class Sidebar extends Component {
 						<li><Link to="#">South America <span>(5)</span></Link></li>
 					</ul>
 				</div>
-				<div className="sidebar-box ftco-animate fadeInUp ftco-animated">
+				{/* <div className="sidebar-box ftco-animate fadeInUp ftco-animated">
 					<h3>Popular Articles</h3>
 					<div className="block-21 mb-4 d-flex">
 						<Link to="#" className="blog-img mr-4" style={{ backgroundImage: 'url("/assets/explore/images/image_1.jpg")' }}></Link>
@@ -99,7 +91,7 @@ class Sidebar extends Component {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				<div className="sidebar-box ftco-animate fadeInUp ftco-animated">
 					<h3>Tag Cloud</h3>
 					<ul className="tagcloud">
@@ -171,7 +163,7 @@ export default class Home extends Component<HomeProps, HomeState> {
 		// 	}, { offset: '95%' });
 		// };
 		// contentWayPoint();
-		this.props.dispatch(listArticles());
+		this.props.dispatch(listArticles(1, 5));
 		// document.getElementById('section-about').scrollIntoView({ behavior: 'smooth' });
 	}
 

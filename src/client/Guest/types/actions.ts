@@ -4,6 +4,7 @@ import Article from "./Article";
 
 export const LIST_ARTICLES = 'LIST_ARTICLES';
 export const GET_ARTICLE_BY_TITLE = 'GET_ARTICLE_BY_TITLE';
+export const LIST_ARTICLES_BY_CATEGORY = 'LIST_ARTICLES_BY_CATEGORY';
 
 export interface listArticlesAction {
 	type: typeof LIST_ARTICLES;
@@ -17,7 +18,14 @@ export interface getArticleByTitleAction {
 	article: Article;
 };
 
-export type ArticleActionTypes = listArticlesAction | getArticleByTitleAction;
+export interface listArticlesByCategoryAction{
+	type:typeof LIST_ARTICLES_BY_CATEGORY;
+	list: Article[];
+	page: number;
+	count: number;
+};
+
+export type ArticleActionTypes = listArticlesAction | getArticleByTitleAction | listArticlesByCategoryAction;
 
 // USER
 

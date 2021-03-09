@@ -52,13 +52,13 @@ function updateArticleSuccess(article: Article): AppActions {
 	return { type: UPDATE_ARTICLE, article };
 };
 
-export function updateArticle(id: string, article: { title: string; content: string, file: File, categoryId: string, tags: string[] }) {
+export function updateArticle(id: string, article: { title: string; content: string, file: File, categoryId: string, tags: Tag[] }) {
 	return async (dispatch: Dispatch<AppActions>) => {
 		const response = await fetch(`/api/articles/${id}`, {
 			credentials: 'same-origin',
 			method: 'put',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(article)
+			body: JSON.stringify({ ...article, tags: article.tags.map((tag) => (tag.tagValue)) })
 		});
 		const responseJson = await response.json();
 		return dispatch(updateArticleSuccess(responseJson.result));

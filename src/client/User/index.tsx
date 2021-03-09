@@ -38,16 +38,22 @@ const rootComponent = (
 											<span className="nav-main-link-name">Articles</span>
 										</Link>
 									</li>
-									<li className="nav-main-item">
+									{/* <li className="nav-main-item">
 										<Link className="nav-main-link active" to="/dashboard/about">
 											<i className="nav-main-link-icon si si-list"></i>
 											<span className="nav-main-link-name">Categories</span>
 										</Link>
-									</li>
+									</li> 
 									<li className="nav-main-item">
 										<Link className="nav-main-link active" to="/dashboard/about">
 											<i className="nav-main-link-icon si si-heart"></i>
 											<span className="nav-main-link-name">About</span>
+										</Link>
+									</li>*/}
+									<li className="nav-main-item">
+										<Link className="nav-main-link active" to="/dashboard/about">
+											<i className="nav-main-link-icon si si-user"></i>
+											<span className="nav-main-link-name">Edit Profile</span>
 										</Link>
 									</li>
 									<li className="nav-main-item">
