@@ -51,9 +51,9 @@ const rootComponent = (
 										</Link>
 									</li>*/}
 									<li className="nav-main-item">
-										<Link className="nav-main-link active" to="/dashboard/about">
+										<Link className="nav-main-link active" to="/dashboard/profile">
 											<i className="nav-main-link-icon si si-user"></i>
-											<span className="nav-main-link-name">Edit Profile</span>
+											<span className="nav-main-link-name">Profile</span>
 										</Link>
 									</li>
 									<li className="nav-main-item">

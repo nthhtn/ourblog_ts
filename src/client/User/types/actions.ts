@@ -1,3 +1,5 @@
+// ARTICLE
+
 import Article from "./Article";
 
 export const CREATE_ARTICLE = 'CREATE_ARTICLE';
@@ -35,6 +37,8 @@ export interface DeleteArticleAction {
 
 export type ArticleActionTypes = listArticlesAction | CreateArticleAction | GetArticleAction | UpdateArticleAction | DeleteArticleAction;
 
+// CATEGORY
+
 import Category from './Category';
 
 export const LIST_CATEGORIES = 'LIST_CATEGORIES';
@@ -46,4 +50,18 @@ export interface ListCategoriesAction {
 
 export type CategoryActionTypes = ListCategoriesAction;
 
-export type AppActions = ArticleActionTypes | CategoryActionTypes;
+
+// USER
+
+import User from './User';
+
+export const GET_MY_PROFILE = 'GET_MY_PROFILE';
+
+export interface getMyProfile {
+	type: typeof GET_MY_PROFILE;
+	result: User;
+};
+
+export type UserActionTypes = getMyProfile;
+
+export type AppActions = ArticleActionTypes | CategoryActionTypes | UserActionTypes;

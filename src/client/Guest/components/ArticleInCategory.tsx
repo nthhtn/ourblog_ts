@@ -5,7 +5,7 @@ import { AnyAction } from 'redux';
 import Pagination from 'react-js-pagination';
 import ReactHtmlParser from 'react-html-parser';
 
-import { listArticles, listArticlesByCategory } from '../actions/article';
+import { listArticlesByCategory } from '../actions/article';
 import Article from '../types/Article';
 
 interface MatchParams {
@@ -97,8 +97,8 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 		};
 	}
 
-	componentDidMount() {
-		this.props.dispatch(listArticlesByCategory(this.state.category, 1, 5));
+	async componentDidMount() {
+		await this.props.dispatch(listArticlesByCategory(this.state.category, 1, 5));
 	}
 
 	async onPageChange(page) {
@@ -122,7 +122,7 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 											innerClass='block-27'
 											activePage={this.state.activePage}
 											itemsCountPerPage={5}
-											totalItemsCount={this.props.article.count}
+											totalItemsCount={this.props.article?.count}
 											pageRangeDisplayed={3}
 											onChange={this.onPageChange.bind(this)}
 										/>

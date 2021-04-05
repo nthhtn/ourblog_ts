@@ -9,13 +9,9 @@ export default class About extends Component {
 		this.state = {};
 	}
 
-	componentDidMount(){
-		document.getElementById('section-about').scrollIntoView({ behavior: 'smooth' });
-	}
-
 	render() {
 		return (
-			<section className="ftco-section ftco-degree-bg" id="section-about">
+			<section className="ftco-section ftco-degree-bg">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12 ftco-animate fadeInUp ftco-animated" style={{ fontSize: '18pt', color: 'black', fontFamily: 'iCiel Altus' }}>

@@ -127,7 +127,7 @@ export default class Home extends Component<HomeProps, HomeState> {
 		this.state = { activePage: 1 };
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		// var contentWayPoint = function () {
 		// 	var i = 0;
 		// 	$('.ftco-animate').waypoint(function (direction) {
@@ -163,18 +163,19 @@ export default class Home extends Component<HomeProps, HomeState> {
 		// 	}, { offset: '95%' });
 		// };
 		// contentWayPoint();
-		this.props.dispatch(listArticles(1, 5));
-		// document.getElementById('section-about').scrollIntoView({ behavior: 'smooth' });
+		await this.props.dispatch(listArticles(1, 5));
+		document.getElementById('articles-wrapper').scrollIntoView({ behavior: 'smooth' });
 	}
 
 	async onPageChange(page) {
-		this.props.dispatch(listArticles(page, 5));
+		await this.props.dispatch(listArticles(page, 5));
 		this.setState({ activePage: page });
+		document.getElementById('articles-wrapper').scrollIntoView({ behavior: 'smooth' });
 	}
 
 	render() {
 		return (
-			<section className="ftco-section">
+			<section className="ftco-section" id="articles-wrapper">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">

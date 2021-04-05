@@ -58,6 +58,9 @@ class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 		const options = {
 			onRowClick: this.onRowClick.bind(this)
 		};
+		const showCategoryDisplayName = (cell, row)=>{
+			return cell.displayName;
+		};
 		return (
 			<main id="main-container">
 				<div className="bg-body-light">
@@ -86,7 +89,7 @@ class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 									}}>
 									Title
 								</TableHeaderColumn>
-								<TableHeaderColumn dataField='content' width="50%" columnClassName="article-brief"
+								<TableHeaderColumn dataField='content' width="30%" columnClassName="article-brief"
 									tdStyle={{
 										whiteSpace: 'nowrap',
 										textOverflow: 'ellipsis',
@@ -94,6 +97,15 @@ class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 										maxWidth: 0
 									}}>
 									Brief Content
+								</TableHeaderColumn>
+								<TableHeaderColumn width="20%" columnClassName="article-category" dataField='categoryId' dataFormat={showCategoryDisplayName}
+									tdStyle={{
+										whiteSpace: 'nowrap',
+										textOverflow: 'ellipsis',
+										overflow: 'hidden',
+										maxWidth: 0
+									}}>
+									Category
 								</TableHeaderColumn>
 								<TableHeaderColumn dataField='createdAt' width="30%">Created At</TableHeaderColumn>
 							</BootstrapTable>
@@ -121,7 +133,7 @@ interface ContentEditorState {
 	file: File;
 	tagOptions: Tag[];
 	tagSelected: Tag[];
-}
+};
 
 interface ContentEditorProps extends ArticleViewProps {
 	editorMode: string;
@@ -130,7 +142,7 @@ interface ContentEditorProps extends ArticleViewProps {
 	content?: string;
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
 	category?: { list: Category[] };
-}
+};
 
 class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 

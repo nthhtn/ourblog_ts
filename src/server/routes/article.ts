@@ -51,9 +51,15 @@ router.route('/')
 	.get(async (req: Request, res: Response) => {
 		const page: number = req.query.page ? Number(req.query.page) : 1;
 		const limit: number = req.query.limit ? Number(req.query.limit) : 5;
-		const result: Array<IArticle> = await Article.find({}).sort({ createdAt: -1 })
+		let filter_options = Object.assign({});
+		if (req.query.categoryId) {
+			filter_options.categoryId = req.query.categoryId
+		}
+		const result: Array<IArticle> = await Article.find(filter_options).sort({ createdAt: -1 })
 			.skip((page - 1) * limit).limit(limit)
-			.populate({ path: 'authorId', select: 'fullName' }).exec();
+			.populate({ path: 'authorId', select: 'fullName' })
+			.populate({ path: 'categoryId', select: 'displayName' })
+			.exec();
 		const count: number = await Article.countDocuments({});
 		return res.json({ success: true, result, count });
 	});
@@ -62,8 +68,8 @@ router.route('/title/:title')
 	.get(async (req: Request, res: Response) => {
 		const article = await Article.findOne({ title: req.params.title })
 			.populate({ path: 'tags', select: 'tagValue' })
-			.populate({ path: 'categoryId', select: 'displayName' })
 			.populate({ path: 'authorId', select: 'fullName' })
+			.populate({ path: 'categoryId', select: 'displayName' })
 			.exec();
 		return res.json({ success: true, result: article });
 	});
@@ -72,13 +78,15 @@ router.route('/category/:category')
 	.get(async (req: Request, res: Response) => {
 		const page: number = req.query.page ? Number(req.query.page) : 1;
 		const limit: number = req.query.limit ? Number(req.query.limit) : 5;
-		const category = await Category.findOne({displayName: req.params.category});
-		const result: Array<IArticle> = await Article.find({categoryId: category._id}).sort({ createdAt: -1 })
+		const category = await Category.findOne({ displayName: req.params.category });
+		const result: Array<IArticle> = await Article.find({ categoryId: category._id }).sort({ createdAt: -1 })
 			.skip((page - 1) * limit).limit(limit)
-			.populate({ path: 'authorId', select: 'fullName' }).exec();
-		const count: number = await Article.countDocuments({});
+			.populate({ path: 'authorId', select: 'fullName' })
+			.populate({ path: 'categoryId', select: 'displayName' })
+			.exec();
+		const count: number = await Article.countDocuments({ categoryId: category._id });
 		return res.json({ success: true, result, count });
-	})
+	});
 
 router.route('/:id')
 	.get(async (req: Request, res: Response) => {
