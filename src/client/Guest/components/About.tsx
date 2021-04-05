@@ -9,9 +9,18 @@ export default class About extends Component {
 		this.state = {};
 	}
 
+	componentDidMount() {
+		window.onload = () => {
+			const yOffset = -50;
+			const element = document.getElementById('about-wrapper');
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
+		}
+	}
+
 	render() {
 		return (
-			<section className="ftco-section ftco-degree-bg">
+			<section className="ftco-section ftco-degree-bg" id="about-wrapper">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12 ftco-animate fadeInUp ftco-animated" style={{ fontSize: '18pt', color: 'black', fontFamily: 'iCiel Altus' }}>

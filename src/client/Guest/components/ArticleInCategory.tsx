@@ -99,16 +99,26 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 
 	async componentDidMount() {
 		await this.props.dispatch(listArticlesByCategory(this.state.category, 1, 5));
+		window.onload = () => {
+			const yOffset = -50;
+			const element = document.getElementById('articles-wrapper');
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
+		}
 	}
 
 	async onPageChange(page) {
-		this.props.dispatch(listArticlesByCategory(this.state.category, page, 5));
+		await this.props.dispatch(listArticlesByCategory(this.state.category, page, 5));
 		this.setState({ activePage: page });
+		const yOffset = -50;
+		const element = document.getElementById('articles-wrapper');
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
 	render() {
 		return (
-			<section className="ftco-section">
+			<section className="ftco-section" id="articles-wrapper">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">

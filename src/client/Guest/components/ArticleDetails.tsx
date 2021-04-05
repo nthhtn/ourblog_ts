@@ -31,12 +31,18 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 
 	async componentDidMount() {
 		await this.props.dispatch(getArticleByTitle(this.state.title));
+		window.onload = () => {
+			const yOffset = -50;
+			const element = document.getElementById('article-details-wrapper');
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
+		}
 	}
 
 	render() {
 		const { current } = this.props.article;
 		return (
-			<section className="ftco-section ftco-degree-bg">
+			<section className="ftco-section ftco-degree-bg" id="article-details-wrapper">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8 ftco-animate fadeInUp ftco-animated">

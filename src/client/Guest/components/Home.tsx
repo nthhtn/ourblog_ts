@@ -128,49 +128,22 @@ export default class Home extends Component<HomeProps, HomeState> {
 	}
 
 	async componentDidMount() {
-		// var contentWayPoint = function () {
-		// 	var i = 0;
-		// 	$('.ftco-animate').waypoint(function (direction) {
-
-		// 		if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
-
-		// 			i++;
-
-		// 			$(this.element).addClass('item-animate');
-		// 			setTimeout(function () {
-
-		// 				$('body .ftco-animate.item-animate').each(function (k) {
-		// 					var el = $(this);
-		// 					setTimeout(function () {
-		// 						var effect = el.data('animate-effect');
-		// 						if (effect === 'fadeIn') {
-		// 							el.addClass('fadeIn ftco-animated');
-		// 						} else if (effect === 'fadeInLeft') {
-		// 							el.addClass('fadeInLeft ftco-animated');
-		// 						} else if (effect === 'fadeInRight') {
-		// 							el.addClass('fadeInRight ftco-animated');
-		// 						} else {
-		// 							el.addClass('fadeInUp ftco-animated');
-		// 						}
-		// 						el.removeClass('item-animate');
-		// 					}, k * 50, 'easeInOutExpo');
-		// 				});
-
-		// 			}, 100);
-
-		// 		}
-
-		// 	}, { offset: '95%' });
-		// };
-		// contentWayPoint();
 		await this.props.dispatch(listArticles(1, 5));
-		document.getElementById('articles-wrapper').scrollIntoView({ behavior: 'smooth' });
+		window.onload = () => {
+			const yOffset = -50;
+			const element = document.getElementById('articles-wrapper');
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
+		}
 	}
 
 	async onPageChange(page) {
 		await this.props.dispatch(listArticles(page, 5));
 		this.setState({ activePage: page });
-		document.getElementById('articles-wrapper').scrollIntoView({ behavior: 'smooth' });
+		const yOffset = -50;
+		const element = document.getElementById('articles-wrapper');
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
 	render() {
