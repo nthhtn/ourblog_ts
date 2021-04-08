@@ -58,7 +58,7 @@ class ArticleTable extends Component<ArticleViewProps, ArticleTableState> {
 		const options = {
 			onRowClick: this.onRowClick.bind(this)
 		};
-		const showCategoryDisplayName = (cell, row)=>{
+		const showCategoryDisplayName = (cell, row) => {
 			return cell.displayName;
 		};
 		return (
@@ -160,7 +160,7 @@ class ArticleEditor extends Component<ContentEditorProps, ContentEditorState>{
 	}
 
 	async componentDidMount() {
-		this.props.dispatch(listCategories());
+		await this.props.dispatch(listCategories());
 		if (this.props.editorMode == 'edit' && this.props.articleId) {
 			await this.props.dispatch(getArticle(this.props.articleId));
 			const { current } = this.props.article;

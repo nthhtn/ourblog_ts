@@ -40,4 +40,17 @@ export interface getMyProfile {
 
 export type UserActionTypes = getMyProfile;
 
-export type AppActions = ArticleActionTypes | UserActionTypes;
+// CATEGORY
+
+import Category from './Category';
+
+export const LIST_CATEGORIES = 'LIST_CATEGORIES';
+
+export interface ListCategoriesAction {
+	type: typeof LIST_CATEGORIES;
+	list: Category[];
+};
+
+export type CategoryActionTypes = ListCategoriesAction;
+
+export type AppActions = ArticleActionTypes | UserActionTypes | CategoryActionTypes;
