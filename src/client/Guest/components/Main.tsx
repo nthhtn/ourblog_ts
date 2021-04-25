@@ -7,6 +7,7 @@ import Home from './Home';
 import About from './About';
 import ArticleDetails from './ArticleDetails';
 import ArticleInCategory from './ArticleInCategory';
+import SearchResult from './SearchResult';
 
 class Main extends Component {
 
@@ -20,6 +21,7 @@ class Main extends Component {
 			<Switch>
 				<Route exact path='/about' component={About} />
 				<Route exact path='/articles/category/:category' render={(props) => (<ArticleInCategory {...this.props} {...props} />)} />
+				<Route exact path='/articles/search' render={(props) => (<SearchResult {...this.props} {...props} />)} />
 				<Route exact path='/articles/:title' render={(props) => (<ArticleDetails {...this.props} {...props} />)} />
 				<Route path='*' render={() => (<Home {...this.props} />)} />
 			</Switch>

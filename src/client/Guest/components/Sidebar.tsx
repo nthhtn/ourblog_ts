@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction, $CombinedState } from 'redux';
+import { AnyAction } from 'redux';
+import qs from 'qs';
 
-import './style/Sidebar.css';
+import '../style/Sidebar.css';
 import Category from '../types/Category';
 import { listCategories } from '../actions/category';
 
 interface SidebarProps {
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	category?: { list: Category[], selected: Category[] }
+	category?: { list: Category[] },
+	location?: any
 }
 
-export default class Sidebar extends Component<SidebarProps, {}> {
+interface SidebarState {
+	selected?: string[],
+	keyword?: string
+}
+
+var self;
+
+export default class Sidebar extends Component<SidebarProps, SidebarState> {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		const query = qs.parse(this.props.location?.search, { ignoreQueryPrefix: true });
+		const category = query.caetegory ? (query.category as string).split(',') : [];
+		this.state = {
+			selected: category,
+			keyword: (query.keyword as string) || ''
+		};
+		self = this;
 	}
 
 	async componentDidMount() {
 		await this.props.dispatch(listCategories());
+		this.setState({ selected: [] });
 		var checkList = document.getElementById('category-checklist');
 		checkList.getElementsByClassName('anchor')[0].addEventListener('click', () => {
 			if (checkList.classList.contains('visible'))
@@ -28,37 +44,63 @@ export default class Sidebar extends Component<SidebarProps, {}> {
 			else
 				checkList.classList.add('visible');
 		});
-		$('#category-checklist .items li').on('click', (e) => {
-			var element = e.target;
-			if (element.classList.contains('checked')) {
-				element.classList.remove('checked');
-			}
-			else {
-				element.classList.add('checked');
-			}
-		});
+	}
+
+	selectCategory(e) {
+		var element = e.target;
+		var categoryId = $(element).attr('data-category');
+		var selected = self.state.selected;
+		if (element.classList.contains('checked')) {
+			element.classList.remove('checked');
+			selected.splice(selected.indexOf(categoryId), 1);
+		}
+		else {
+			element.classList.add('checked');
+			selected = [...selected, categoryId];
+		}
+		self.setState({ selected });
+	}
+
+	triggerSearch(e) {
+		e.preventDefault();
+		const categoryIds = this.state.selected.join(',');
+		const keyword = $('#search-keyword').val() as string;
+		if (keyword.length < 3) {
+
+			return;
+		}
+		window.open(
+			`/articles/search?keyword=${keyword}&category=${categoryIds}`,
+			'_blank'
+		);
 	}
 
 	render() {
 		const categories = this.props.category.list;
-		console.log(categories);
+		var selectedCount = this.state.selected.length;
 		return (
 			<div className="col-lg-4 sidebar ftco-animate fadeInUp ftco-animated">
 				<div className="sidebar-box">
 					<form action="#" className="search-form">
 						<div className="form-group">
 							<span className="icon icon-search"></span>
-							<input type="text" className="form-control" placeholder="Type a keyword and hit enter" />
+							<input type="text" id="search-keyword" className="form-control" placeholder="Type a keyword and hit enter"
+								onChange={(e) => this.setState({ keyword: e.target.value })} />
 						</div>
 						<div className="form-group" style={{ marginTop: '10px' }}>
 							<div id="category-checklist" className="dropdown-check-list">
-								<label className="anchor">Select category</label>
+								<label className="anchor">{selectedCount == 0 ? "Select category" : `${selectedCount} selected`}</label>
 								<ul className="items">
 									{categories.map((item) => (
-										<li key={item._id} className="category-check">{item.displayName} <i className="fas fa-check category-checkicon" aria-hidden="true"></i></li>
+										<li key={item._id} className="category-check" onClick={this.selectCategory} data-category={item._id} >
+											{item.displayName} <i className="fas fa-check category-checkicon" aria-hidden="true"></i>
+										</li>
 									))}
 								</ul>
 							</div>
+						</div>
+						<div className="form-group" style={{ marginTop: '10px', left: '35%' }}>
+							<button className="btn btn-primary" onClick={this.triggerSearch.bind(this)}>Search</button>
 						</div>
 					</form>
 				</div>

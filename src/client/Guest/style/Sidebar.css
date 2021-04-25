@@ -73,3 +73,9 @@
 	top: 4px;
 	right: 5px;
 }
+
+.tagcloud .tag-cloud-link:hover {
+	color: #fff;
+	background-color: #ff895d;
+	border-color: transparent;
+}

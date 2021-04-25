@@ -1,4 +1,4 @@
-import { ArticleActionTypes, LIST_ARTICLES, GET_ARTICLE_BY_TITLE, LIST_ARTICLES_BY_CATEGORY } from "../types/actions";
+import { ArticleActionTypes, LIST_ARTICLES, GET_ARTICLE_BY_TITLE, LIST_ARTICLES_BY_CATEGORY, SEARCH_ARTICLES } from "../types/actions";
 import Article from '../types/Article';
 
 const list: Article[] = [];
@@ -10,7 +10,8 @@ export default function (state = { list, current, page, count }, action: Article
 	switch (action.type) {
 		case LIST_ARTICLES: return { ...state, list: action.list, page: action.page, count: action.count };
 		case GET_ARTICLE_BY_TITLE: return { ...state, current: action.article };
-		case LIST_ARTICLES_BY_CATEGORY: return {...state, list:action.list, page:action.page, count:action.count};
+		case LIST_ARTICLES_BY_CATEGORY: return { ...state, list: action.list, page: action.page, count: action.count };
+		case SEARCH_ARTICLES: return { ...state, list: action.list, page: action.page, count: action.count };
 		default: return state;
 	}
 };

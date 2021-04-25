@@ -5,6 +5,7 @@ import Article from "./Article";
 export const LIST_ARTICLES = 'LIST_ARTICLES';
 export const GET_ARTICLE_BY_TITLE = 'GET_ARTICLE_BY_TITLE';
 export const LIST_ARTICLES_BY_CATEGORY = 'LIST_ARTICLES_BY_CATEGORY';
+export const SEARCH_ARTICLES = 'SEARCH_ARTICLES';
 
 export interface listArticlesAction {
 	type: typeof LIST_ARTICLES;
@@ -18,14 +19,21 @@ export interface getArticleByTitleAction {
 	article: Article;
 };
 
-export interface listArticlesByCategoryAction{
-	type:typeof LIST_ARTICLES_BY_CATEGORY;
+export interface listArticlesByCategoryAction {
+	type: typeof LIST_ARTICLES_BY_CATEGORY;
 	list: Article[];
 	page: number;
 	count: number;
 };
 
-export type ArticleActionTypes = listArticlesAction | getArticleByTitleAction | listArticlesByCategoryAction;
+export interface searchArticlesAction {
+	type: typeof SEARCH_ARTICLES;
+	list: Article[];
+	page: number;
+	count: number;
+}
+
+export type ArticleActionTypes = listArticlesAction | getArticleByTitleAction | listArticlesByCategoryAction | searchArticlesAction;
 
 // USER
 
