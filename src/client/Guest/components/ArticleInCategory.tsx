@@ -7,6 +7,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 import { listArticlesByCategory } from '../actions/article';
 import Article from '../types/Article';
+import { scrollToElement } from '../helper';
 
 interface MatchParams {
 	category: string;
@@ -100,20 +101,14 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 	async componentDidMount() {
 		await this.props.dispatch(listArticlesByCategory(this.state.category, 1, 5));
 		window.onload = () => {
-			const yOffset = -50;
-			const element = document.getElementById('articles-wrapper');
-			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-			window.scrollTo({ top: y, behavior: 'smooth' });
+			scrollToElement('articles-wrapper');
 		}
 	}
 
 	async onPageChange(page) {
 		await this.props.dispatch(listArticlesByCategory(this.state.category, page, 5));
 		this.setState({ activePage: page });
-		const yOffset = -50;
-		const element = document.getElementById('articles-wrapper');
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
+		scrollToElement('articles-wrapper');
 	}
 
 	render() {

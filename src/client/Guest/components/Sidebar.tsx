@@ -10,13 +10,13 @@ import { listCategories } from '../actions/category';
 
 interface SidebarProps {
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
-	category?: { list: Category[] },
-	location?: any
+	category?: { list: Category[] };
+	location?: any;
 }
 
 interface SidebarState {
-	selected?: string[],
-	keyword?: string
+	selected?: string[];
+	keyword?: string;
 }
 
 var self;

@@ -4,10 +4,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import Pagination from 'react-js-pagination';
 import ReactHtmlParser from 'react-html-parser';
+import qs from 'qs';
 
-import { listArticles } from '../actions/article';
+import { searchArticles } from '../actions/article';
 import Article from '../types/Article';
 import Sidebar from './Sidebar';
+import { scrollToElement } from '../helper';
 
 class ArticleItem extends Component<Article, {}> {
 
@@ -53,35 +55,42 @@ class ArticleItem extends Component<Article, {}> {
 interface SearchResultProps {
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
 	article?: { list: Article[]; current: Article; page: number; count: number };
+	location?: any;
 };
 
 interface SearchResultState {
 	activePage: number;
+	category?: string[];
+	keyword?: string;
 };
 
 export default class SearchResult extends Component<SearchResultProps, SearchResultState> {
 
 	constructor(props) {
 		super(props);
+		const query = qs.parse(this.props.location?.search, { ignoreQueryPrefix: true });
+		const category = query.caetegory ? (query.category as string).split(',') : [];
 		this.state = {
-			activePage: 1
+			activePage: query.page ? parseInt(query.page as string) : 1,
+			category,
+			keyword: (query.keyword as string) || ''
 		};
 	}
 
 	async componentDidMount() {
-		await this.props.dispatch(listArticles(1, 5));
+		await this.props.dispatch(searchArticles(this.state.keyword, this.state.category.join(','), 1, 5));
+		window.onload = () => {
+			scrollToElement('articles-wrapper');
+		}
 	}
 
 	async onPageChange(page) {
-		await this.props.dispatch(listArticles(page, 5));
-		this.setState({ activePage: page });
-		const yOffset = -50;
-		const element = document.getElementById('articles-wrapper');
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
+		await this.props.dispatch(searchArticles(this.state.keyword, this.state.category.join(','), page, 5));
+		scrollToElement('articles-wrapper');
 	}
 
 	render() {
+		console.log(1);
 		return (
 			<section className="ftco-section" id="articles-wrapper">
 				<div className="container">

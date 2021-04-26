@@ -6,6 +6,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 import { getArticleByTitle } from '../actions/article';
 import Article from '../types/Article';
+import { scrollToElement } from '../helper';
 
 interface MatchParams {
 	title: string;
@@ -32,10 +33,7 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 	async componentDidMount() {
 		await this.props.dispatch(getArticleByTitle(this.state.title));
 		window.onload = () => {
-			const yOffset = -50;
-			const element = document.getElementById('article-details-wrapper');
-			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-			window.scrollTo({ top: y, behavior: 'smooth' });
+			scrollToElement('article-details-wrapper');
 		}
 	}
 

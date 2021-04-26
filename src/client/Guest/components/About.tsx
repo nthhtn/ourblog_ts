@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 
+import { scrollToElement } from '../helper';
+
 export default class About extends Component {
 
 	constructor(props) {
@@ -11,10 +13,7 @@ export default class About extends Component {
 
 	componentDidMount() {
 		window.onload = () => {
-			const yOffset = -50;
-			const element = document.getElementById('about-wrapper');
-			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-			window.scrollTo({ top: y, behavior: 'smooth' });
+			scrollToElement('about-wrapper');
 		}
 	}
 

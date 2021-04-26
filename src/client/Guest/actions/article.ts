@@ -46,7 +46,7 @@ function searchArticlesSuccess(list: Article[], page: number, count: number): Ap
 
 export function searchArticles(keyword: string, category: string, page = 1, limit = 10) {
 	return async (dispatch: Dispatch<AppActions>) => {
-		const response = await fetch(`/api/articles/search/${category}?page=${page}&limit=${limit}`, { credentials: 'same-origin' });
+		const response = await fetch(`/api/articles/search?keyword=${keyword}&category=${category}&page=${page}&limit=${limit}`, { credentials: 'same-origin' });
 		const responseJson = await response.json();
 		return dispatch(searchArticlesSuccess(responseJson.result, page, responseJson.count));
 	};
