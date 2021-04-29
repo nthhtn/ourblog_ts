@@ -8,6 +8,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { listArticles } from '../actions/article';
 import Article from '../types/Article';
 import Sidebar from './Sidebar';
+import { scrollToElement } from '../helper';
 
 class ArticleItem extends Component<Article, {}> {
 
@@ -72,11 +73,7 @@ export default class Home extends Component<HomeProps, HomeState> {
 
 	async onPageChange(page) {
 		await this.props.dispatch(listArticles(page, 5));
-		this.setState({ activePage: page });
-		const yOffset = -50;
-		const element = document.getElementById('articles-wrapper');
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
+		scrollToElement('articles-wrapper');
 	}
 
 	render() {

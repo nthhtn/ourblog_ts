@@ -92,7 +92,6 @@ router.route('/search')
 	.get(async (req: Request, res: Response) => {
 		const page: number = req.query.page ? Number(req.query.page) : 1;
 		const limit: number = req.query.limit ? Number(req.query.limit) : 5;
-		console.log(req.query);
 		let filterOptions = Object.assign({});
 		if (req.query.category) {
 			const categoryIds = (req.query.category as string || '').split(',');
@@ -103,14 +102,12 @@ router.route('/search')
 			const regexFilter = { $regex: new RegExp(keyword, 'gi') };
 			filterOptions['$or'] = [{ title: regexFilter }, { content: regexFilter }];
 		}
-		console.log(filterOptions);
 		const result: Array<IArticle> = await Article.find(filterOptions)
 			.sort({ createdAt: -1 })
 			.skip((page - 1) * limit).limit(limit)
 			.populate({ path: 'authorId', select: 'fullName' })
 			.populate({ path: 'categoryId', select: 'displayName' })
 			.exec();
-		console.log(result);
 		const count: number = await Article.countDocuments(filterOptions);
 		return res.json({ success: true, result, count });
 	});

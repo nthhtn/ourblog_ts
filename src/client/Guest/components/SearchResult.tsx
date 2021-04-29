@@ -5,6 +5,7 @@ import { AnyAction } from 'redux';
 import Pagination from 'react-js-pagination';
 import ReactHtmlParser from 'react-html-parser';
 import qs from 'qs';
+import { Helmet } from 'react-helmet';
 
 import { searchArticles } from '../actions/article';
 import Article from '../types/Article';
@@ -90,9 +91,11 @@ export default class SearchResult extends Component<SearchResultProps, SearchRes
 	}
 
 	render() {
-		console.log(1);
 		return (
 			<section className="ftco-section" id="articles-wrapper">
+				<Helmet>
+					<title>{this.props.article?.count.toString()} search result(s)</title>
+				</Helmet>
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">

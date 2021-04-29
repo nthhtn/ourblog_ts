@@ -3,10 +3,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import ReactHtmlParser from 'react-html-parser';
+import { Helmet } from 'react-helmet';
 
 import { getArticleByTitle } from '../actions/article';
 import Article from '../types/Article';
 import { scrollToElement } from '../helper';
+import Sidebar from './Sidebar';
 
 interface MatchParams {
 	title: string;
@@ -32,15 +34,16 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 
 	async componentDidMount() {
 		await this.props.dispatch(getArticleByTitle(this.state.title));
-		window.onload = () => {
-			scrollToElement('article-details-wrapper');
-		}
+		scrollToElement('article-details-wrapper');
 	}
 
 	render() {
 		const { current } = this.props.article;
 		return (
 			<section className="ftco-section ftco-degree-bg" id="article-details-wrapper">
+				<Helmet>
+					<title>{current?.title}</title>
+				</Helmet>
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8 ftco-animate fadeInUp ftco-animated">
@@ -64,6 +67,7 @@ export default class ArticleDetails extends Component<ArticleDetailsProps, Artic
 								</div>
 							</div>
 						</div>
+						<Sidebar {...this.props} />
 					</div>
 				</div>
 			</section>

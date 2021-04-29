@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
+import { Helmet } from 'react-helmet';
 
 import { scrollToElement } from '../helper';
 
@@ -20,6 +21,9 @@ export default class About extends Component {
 	render() {
 		return (
 			<section className="ftco-section ftco-degree-bg" id="about-wrapper">
+				<Helmet>
+					<title>Lời chào thương mến, từ ba mẹ của Silly~</title>
+				</Helmet>
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12 ftco-animate fadeInUp ftco-animated" style={{ fontSize: '18pt', color: 'black', fontFamily: 'iCiel Altus' }}>

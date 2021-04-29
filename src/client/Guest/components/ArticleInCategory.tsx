@@ -4,10 +4,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import Pagination from 'react-js-pagination';
 import ReactHtmlParser from 'react-html-parser';
+import { Helmet } from 'react-helmet';
 
 import { listArticlesByCategory } from '../actions/article';
 import Article from '../types/Article';
 import { scrollToElement } from '../helper';
+import Sidebar from './Sidebar';
 
 interface MatchParams {
 	category: string;
@@ -54,30 +56,6 @@ class ArticleItem extends Component<Article, {}> {
 
 }
 
-class Sidebar extends Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
-	render() {
-		return (
-			<div className="col-lg-4 sidebar ftco-animate fadeInUp ftco-animated">
-				<div className="sidebar-box">
-					<form action="#" className="search-form">
-						<div className="form-group">
-							<span className="icon icon-search"></span>
-							<input type="text" className="form-control" placeholder="Type a keyword and hit enter" />
-						</div>
-					</form>
-				</div>
-			</div>
-		);
-	}
-
-}
-
 interface ArticleInCategoryProps extends RouteComponentProps<MatchParams> {
 	dispatch?: ThunkDispatch<any, any, AnyAction>;
 	article?: { list: Article[]; current: Article; page: number; count: number };
@@ -114,6 +92,9 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 	render() {
 		return (
 			<section className="ftco-section" id="articles-wrapper">
+				<Helmet>
+					<title>{this.state.category}</title>
+				</Helmet>
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">
@@ -135,7 +116,7 @@ export default class ArticleInCategory extends Component<ArticleInCategoryProps,
 								</div>
 							</div>
 						</div>
-						<Sidebar />
+						<Sidebar {...this.props} />
 					</div>
 				</div>
 			</section>
